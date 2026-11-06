@@ -56,13 +56,15 @@ function splitColumns(list) {
   return [list.slice(0, mid), list.slice(mid)];
 }
 
+function coveringPlanIds(country) {
+  return new Set(matchesForCountry(country).map((h) => h.plan.id));
+}
+
 function visiblePlans() {
-  if (state.selectedPlanId) return PLANS;
-  if (state.chosenCountry) {
-    const ids = new Set(matchesForCountry(state.chosenCountry).map((h) => h.plan.id));
-    if (ids.size) return PLANS.filter((p) => ids.has(p.id));
-  }
-  return PLANS;
+  if (!state.chosenCountry) return PLANS;
+  const ids = coveringPlanIds(state.chosenCountry);
+  if (!ids.size) return PLANS;
+  return PLANS.filter((p) => ids.has(p.id));
 }
 
 function panelPlan() {
@@ -223,6 +225,12 @@ function renderSuggest() {
 }
 
 function render() {
+  if (state.selectedPlanId && state.chosenCountry) {
+    const ids = coveringPlanIds(state.chosenCountry);
+    if (ids.size && !ids.has(state.selectedPlanId)) {
+      state.selectedPlanId = null;
+    }
+  }
   renderTiles();
   renderPanel();
   renderHint();
@@ -236,6 +244,7 @@ function chooseCountry(country) {
   suggestEl.hidden = true;
   searchWrap.classList.remove("open");
   render();
+  tilesScrollEl.scrollTo({ left: 0 });
 }
 
 function openModal() {
@@ -312,11 +321,15 @@ tilesEl.addEventListener("click", (e) => {
 });
 
 searchInput.addEventListener("input", () => {
+  const previousCountry = state.chosenCountry;
   state.query = searchInput.value;
   state.chosenCountry = findCountry(state.query);
   const items = suggestions(state.query);
   state.suggestIndex = items.length ? 0 : -1;
   render();
+  if (!state.chosenCountry && previousCountry) {
+    tilesScrollEl.scrollTo({ left: 0 });
+  }
 });
 
 searchInput.addEventListener("focus", () => render());
