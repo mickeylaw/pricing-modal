@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Region plans</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css?v=4" />
+  </head>
+  <body>
+    <div class="page">
+      <button class="open-btn" type="button" id="open-modal">View region plans</button>
+    </div>
+
+    <div class="overlay" id="overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <header class="header">
+          <div class="header-copy">
+            <h1 id="modal-title">Region plans</h1>
+            <p>
+              Our SIM charges are based on your chosen region plan. Check your country to
+              ensure it is covered.
+            </p>
+          </div>
+          <button class="close" type="button" id="close-modal" aria-label="Close">
+            <img src="assets/icon-close.svg" width="24" height="24" alt="" />
+          </button>
+        </header>
+        <div class="divider"></div>
+        <div class="body">
+          <div class="main">
+            <div class="search-wrap" id="search-wrap">
+              <label for="country-search">Country search</label>
+              <div class="search-field">
+                <input
+                  id="country-search"
+                  class="search-input"
+                  type="text"
+                  placeholder="E.g. Australia"
+                  autocomplete="off"
+                />
+                <div class="suggest" id="suggest" hidden></div>
+              </div>
+              <p class="hint" id="hint"></p>
+            </div>
+            <div class="tiles-scroll" id="tiles-scroll">
+              <div class="tiles-track" id="tiles"></div>
+            </div>
+            <div class="disclaimer">
+              <p>Countries and service zones listed can be updated without notice.</p>
+              <p>
+                There may be more than one service provider in each country, subject to
+                the actual service availabilities.
+              </p>
+            </div>
+          </div>
+          <aside class="panel" id="panel" aria-hidden="true"></aside>
+        </div>
+      </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
